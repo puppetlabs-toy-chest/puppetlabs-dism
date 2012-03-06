@@ -28,7 +28,7 @@ Puppet::Type.type(:dism).provide(:dism) do
 
   def create
     if resource[:answer]
-      execute['dism.exe', '/online/', '/Enable-Feature', "/FeatureName:#{resource[:name]}", "/Apply-Unattend:#{resource[:answer]}"]
+      execute['dism.exe', '/online', '/Enable-Feature', "/FeatureName:#{resource[:name]}", "/Apply-Unattend:#{resource[:answer]}"]
     else
       execute ['C:\\Windows\\sysnative\\dism.exe', '/online', '/Enable-Feature', "/FeatureName:#{resource[:name]}"].join(' ')
     end
