@@ -4,8 +4,8 @@ Puppet::Type.newtype(:dism) do
   ensurable do
     desc "Windows feature install state."
 
-    aliasvalue(:enabled, :present)
-    aliasvalue(:disabled, :absent)
+    #aliasvalue(:enabled, :present)
+    #aliasvalue(:disabled, :absent)
 
     newvalue(:present) do
       provider.create
