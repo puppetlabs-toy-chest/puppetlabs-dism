@@ -1,4 +1,5 @@
-require 'win32-dir'
+require 'win32/dir'
+
 Puppet::Type.type(:dism).provide(:dism) do
   @doc = "Manages Windows features for Windows 2008R2 and Windows 7"
 
@@ -7,11 +8,11 @@ Puppet::Type.type(:dism).provide(:dism) do
 
   # Check for 64bit Windows
   if ENV.has_key?('ProgramFiles(x86)')
-    commands :dism => "#{Dir::Windows}\\sysnative\\Dism.exe"
-    @dism = "#{Dir::Windows}\\sysnative\\Dism.exe"
+    commands :dism => "#{Dir::WINDOWS}\\sysnative\\Dism.exe"
+    @dism = "#{Dir::WINDOWS}\\sysnative\\Dism.exe"
   else
     commands :dism => 'dism.exe'
-    @dism = "#{Dir::Windows}\\system32\\Dism.exe"
+    @dism = "#{Dir::WINDOWS}\\system32\\Dism.exe"
   end
 
   def self.prefetch(resources)
