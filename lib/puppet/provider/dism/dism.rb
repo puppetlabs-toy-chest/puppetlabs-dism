@@ -1,10 +1,18 @@
+require 'win32-dir'
 Puppet::Type.type(:dism).provide(:dism) do
   @doc = "Manages Windows features for Windows 2008R2 and Windows 7"
 
   confine    :operatingsystem => :windows
   defaultfor :operatingsystem => :windows
 
-  commands :dism => 'dism.exe'
+  # Check for 64bit Windows
+  if ENV.has_key?('ProgramFiles(x86)')
+    commands :dism => "#{Dir::Windows}\\sysnative\\Dism.exe"
+    @dism = "#{Dir::Windows}\\sysnative\\Dism.exe"
+  else
+    commands :dism => 'dism.exe'
+    @dism = "#{Dir::Windows}\\system32\\Dism.exe"
+  end
 
   def self.prefetch(resources)
     instances.each do |prov|
@@ -15,7 +23,7 @@ Puppet::Type.type(:dism).provide(:dism) do
   end
 
   def self.instances
-    features = execute ['C:\\Windows\\sysnative\\Dism.exe', '/online', '/Get-Features'].join(' ')
+    features = execute [@dism, '/online', '/Get-Features'].join(' ')
     features = features.scan(/^Feature Name : ([\w-]+)\nState : (\w+)/)
     features.collect do |f|
       new(:name => f[0], :state => f[1])
@@ -28,18 +36,18 @@ Puppet::Type.type(:dism).provide(:dism) do
 
   def create
     if resource[:answer]
-      execute['dism.exe', '/online', '/Enable-Feature', "/FeatureName:#{resource[:name]}", "/Apply-Unattend:#{resource[:answer]}"]
+      execute [@dism, '/online', '/Enable-Feature', "/FeatureName:#{resource[:name]}", "/Apply-Unattend:#{resource[:answer]}"].join(' ')
     else
-      execute ['C:\\Windows\\sysnative\\dism.exe', '/online', '/Enable-Feature', "/FeatureName:#{resource[:name]}"].join(' ')
+      execute [@dism, '/online', '/Enable-Feature', "/FeatureName:#{resource[:name]}"].join(' ')
     end
   end
 
   def destroy
-    execute ['C:\\Windows\\sysnative\\dism.exe', '/online', '/Disable-Feature', "/FeatureName:#{resource[:name]}"].join(' ')
+    execute [@dism, '/online', '/Disable-Feature', "/FeatureName:#{resource[:name]}"].join(' ')
   end
 
   def currentstate
-    feature = execute ['C:\\Windows\\sysnative\\dism.exe', '/online', '/Get-FeatureInfo', "/FeatureName:#{resource[:name]}"].join(' ')
+    feature = execute [@dism, '/online', '/Get-FeatureInfo', "/FeatureName:#{resource[:name]}"].join(' ')
     feature =~ /^State : (\w+)/
     $1
   end
