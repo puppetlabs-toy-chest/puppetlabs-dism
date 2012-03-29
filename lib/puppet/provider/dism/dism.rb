@@ -1,18 +1,15 @@
-require 'win32/dir'
-
 Puppet::Type.type(:dism).provide(:dism) do
   @doc = "Manages Windows features for Windows 2008R2 and Windows 7"
 
   confine    :operatingsystem => :windows
   defaultfor :operatingsystem => :windows
 
-  # Check for 64bit Windows
-  if ENV.has_key?('ProgramFiles(x86)')
-    commands :dism => "#{Dir::WINDOWS}\\sysnative\\Dism.exe"
-    @dism = "#{Dir::WINDOWS}\\sysnative\\Dism.exe"
-  else
-    commands :dism => 'dism.exe'
-    @dism = "#{Dir::WINDOWS}\\system32\\Dism.exe"
+  if Puppet.features.microsoft_windows?
+    if ENV.has_key?('ProgramFiles(x86)')
+      commands :dism => "#{Dir::WINDOWS}\\sysnative\\Dism.exe"
+    else
+      commands :dism => "#{Dir::WINDOWS}\\system32\\Dism.exe"
+    end
   end
 
   def self.prefetch(resources)
@@ -24,7 +21,7 @@ Puppet::Type.type(:dism).provide(:dism) do
   end
 
   def self.instances
-    features = execute [@dism, '/online', '/Get-Features'].join(' ')
+    features = dism '/online', '/Get-Features'
     features = features.scan(/^Feature Name : ([\w-]+)\nState : (\w+)/)
     features.collect do |f|
       new(:name => f[0], :state => f[1])
@@ -37,18 +34,18 @@ Puppet::Type.type(:dism).provide(:dism) do
 
   def create
     if resource[:answer]
-      execute [@dism, '/online', '/Enable-Feature', "/FeatureName:#{resource[:name]}", "/Apply-Unattend:#{resource[:answer]}"].join(' ')
+      dism '/online', '/Enable-Feature', "/FeatureName:#{resource[:name]}", "/Apply-Unattend:#{resource[:answer]}"
     else
-      execute [@dism, '/online', '/Enable-Feature', "/FeatureName:#{resource[:name]}"].join(' ')
+      dism '/online', '/Enable-Feature', "/FeatureName:#{resource[:name]}"
     end
   end
 
   def destroy
-    execute [@dism, '/online', '/Disable-Feature', "/FeatureName:#{resource[:name]}"].join(' ')
+    dism '/online', '/Disable-Feature', "/FeatureName:#{resource[:name]}"
   end
 
   def currentstate
-    feature = execute [@dism, '/online', '/Get-FeatureInfo', "/FeatureName:#{resource[:name]}"].join(' ')
+    feature = dism '/online', '/Get-FeatureInfo', "/FeatureName:#{resource[:name]}"
     feature =~ /^State : (\w+)/
     $1
   end
