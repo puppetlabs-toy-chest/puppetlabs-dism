@@ -34,9 +34,9 @@ Puppet::Type.type(:dism).provide(:dism) do
 
   def create
     if resource[:answer]
-      dism '/online', '/Enable-Feature', "/FeatureName:#{resource[:name]}", "/Apply-Unattend:#{resource[:answer]}"
+      dism '/online', '/Enable-Feature', "/FeatureName:#{resource[:name]}", "/Apply-Unattend:#{resource[:answer]}", '/NoRestart'
     else
-      dism '/online', '/Enable-Feature', "/FeatureName:#{resource[:name]}"
+      dism '/online', '/Enable-Feature', "/FeatureName:#{resource[:name]}", '/NoRestart'
     end
   end
 
