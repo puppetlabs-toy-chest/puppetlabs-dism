@@ -6,9 +6,6 @@ Puppet::Type.newtype(:dism) do
 
     defaultvalues
 
-    aliasvalue(:enabled, :present)
-    aliasvalue(:disabled, :absent)
-
     newvalue(:present) do
       provider.create
     end
