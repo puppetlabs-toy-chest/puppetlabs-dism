@@ -33,11 +33,17 @@ Puppet::Type.type(:dism).provide(:dism) do
   end
 
   def create
-    if resource[:answer]
-      dism '/online', '/Enable-Feature', "/FeatureName:#{resource[:name]}", "/Apply-Unattend:#{resource[:answer]}", '/NoRestart'
+    if ENV.has_key?('ProgramFiles(x86)')
+      dism_cmd = "#{Dir::WINDOWS}\\sysnative\\Dism.exe"
     else
-      dism '/online', '/Enable-Feature', "/FeatureName:#{resource[:name]}", '/NoRestart'
+      dism_cmd = "#{Dir::WINDOWS}\\system32\\Dism.exe"
     end
+    if resource[:answer]
+      output = execute([dism_cmd, '/online', '/Enable-Feature', "/FeatureName:#{resource[:name]}", "/Apply-Unattend:#{resource[:answer]}", '/NoRestart'], :failonfail => false)
+    else
+      output = execute([dism_cmd, '/online', '/Enable-Feature', "/FeatureName:#{resource[:name]}", '/NoRestart'], :failonfail => false)
+    end
+    raise Puppet::Error, "Unexpected exitcode: #{$?.exitstatus}\nError:#{output}" unless resource[:exitcode].include? $?.exitstatus
   end
 
   def destroy
