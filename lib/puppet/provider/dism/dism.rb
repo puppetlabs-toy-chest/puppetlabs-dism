@@ -47,7 +47,13 @@ Puppet::Type.type(:dism).provide(:dism) do
   end
 
   def destroy
-    dism '/online', '/Disable-Feature', "/FeatureName:#{resource[:name]}"
+    if ENV.has_key?('ProgramFiles(x86)')
+      dism_cmd = "#{Dir::WINDOWS}\\sysnative\\Dism.exe"
+    else
+      dism_cmd = "#{Dir::WINDOWS}\\system32\\Dism.exe"
+    end
+    output = execute([dism_cmd, '/online', '/Disable-Feature', "/FeatureName:#{resource[:name]}", '/NoRestart'], :failonfail => false)
+    raise Puppet::Error, "Unexpected exitcode: #{$?.exitstatus}\nError:#{output}" unless resource[:exitcode].include? $?.exitstatus
   end
 
   def currentstate
