@@ -38,8 +38,12 @@ Puppet::Type.type(:dism).provide(:dism) do
     else
       dism_cmd = "#{Dir::WINDOWS}\\system32\\Dism.exe"
     end
-    if resource[:answer]
+    if resource[:answer] and resource[:all]
+      output = execute([dism_cmd, '/online', '/Enable-Feature', '/All', "/FeatureName:#{resource[:name]}", "/Apply-Unattend:#{resource[:answer]}", '/NoRestart'], :failonfail => false)
+    elsif resource[:answer]
       output = execute([dism_cmd, '/online', '/Enable-Feature', "/FeatureName:#{resource[:name]}", "/Apply-Unattend:#{resource[:answer]}", '/NoRestart'], :failonfail => false)
+    elsif resource[:all]
+      output = execute([dism_cmd, '/online', '/Enable-Feature', '/All', "/FeatureName:#{resource[:name]}", '/NoRestart'], :failonfail => false)
     else
       output = execute([dism_cmd, '/online', '/Enable-Feature', "/FeatureName:#{resource[:name]}", '/NoRestart'], :failonfail => false)
     end

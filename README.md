@@ -8,6 +8,7 @@ http://technet.microsoft.com/en-us/library/dd744582(v=ws.10).aspx
 
     dism { 'NetFx3':
       ensure => present,
+      all => true,
     }
 
     dism { 'IIS-WebServer':
