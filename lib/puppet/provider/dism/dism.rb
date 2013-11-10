@@ -38,11 +38,21 @@ Puppet::Type.type(:dism).provide(:dism) do
     else
       dism_cmd = "#{Dir::WINDOWS}\\system32\\Dism.exe"
     end
-    if resource[:answer]
-      output = execute([dism_cmd, '/online', '/Enable-Feature', "/FeatureName:#{resource[:name]}", "/Apply-Unattend:#{resource[:answer]}", '/NoRestart'], :failonfail => false)
-    else
-      output = execute([dism_cmd, '/online', '/Enable-Feature', "/FeatureName:#{resource[:name]}", '/NoRestart'], :failonfail => false)
+
+    opts=['/online', '/Enable-Feature', "/FeatureName:#{resource[:name]}"]
+    if resource[:all_dependencies]
+      opts.insert(-1, "/All")
     end
+    if resource[:answer]
+      opts.insert(-1, "/Apply-Unattend:#{resource[:answer]}", '/NoRestart' )
+    else
+      opts.insert(-1,  '/NoRestart')
+    end
+    if resource[:source]
+      opts.insert(-1, "/Source:#{resource[:source]}", "/LimitAccess")
+    end
+    output = execute( [ dism_cmd, *opts], :failonfail => false )
+
     raise Puppet::Error, "Unexpected exitcode: #{$?.exitstatus}\nError:#{output}" unless resource[:exitcode].include? $?.exitstatus
   end
 
