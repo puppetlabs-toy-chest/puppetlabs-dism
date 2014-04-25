@@ -25,6 +25,6 @@ Puppet::Type.newtype(:dism) do
 
   newparam(:exitcode, :array_matching => :all) do
     desc "DISM installation process exit code"
-    defaultto([0, 3010])
+    defaultto([0, 3010, 3010 & 0xFF])
   end
 end
