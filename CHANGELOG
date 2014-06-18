@@ -1,0 +1,10 @@
+2014-06-18 Release 0.2.0
+Features:
+- Added 'all' parameter to indicate whether or not all dependencies should be
+installed
+- Add support for additional exit codes
+- Add workaround for https://bugs.ruby-lang.org/issues/8083
+- Add Apache 2.0 License
+
+Fixes:
+- Documentation typo fix
