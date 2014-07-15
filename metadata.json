@@ -1,16 +1,17 @@
 {
-  "project_page": "https://github.com/puppetlabs/puppetlabs-dism",
+  "name": "puppetlabs-dism",
+  "version": "0.2.1",
+  "author": "puppetlabs",
+  "summary": "Windows DISM puppet module",
   "license": "Apache License, Version 2.0",
   "source": "https://github.com/puppetlabs/puppetlabs-dism",
-  "dependencies": [
-
-  ],
+  "project_page": "https://github.com/puppetlabs/puppetlabs-dism",
+  "issues_url": "https://github.com/puppetlabs/puppetlabs-dism/issues",
   "types": [
-
+  
   ],
   "description": "Windows Deployment Image Servicing and Management (DISM) Puppet Module.",
-  "summary": "Windows DISM puppet module",
-  "name": "puppetlabs-dism",
-  "author": "puppetlabs",
-  "version": "0.2.0"
+  "dependencies": [
+  
+  ]
 }
