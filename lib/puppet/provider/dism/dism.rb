@@ -5,7 +5,7 @@ Puppet::Type.type(:dism).provide(:dism) do
   defaultfor :operatingsystem => :windows
 
   if Puppet.features.microsoft_windows?
-    if ENV.has_key?('ProgramFiles(x86)')
+    if Facter.value("architecture") =~ /64/
       commands :dism => "#{Dir::WINDOWS}\\sysnative\\Dism.exe"
     else
       commands :dism => "#{Dir::WINDOWS}\\system32\\Dism.exe"
@@ -33,7 +33,7 @@ Puppet::Type.type(:dism).provide(:dism) do
   end
 
   def create
-    if ENV.has_key?('ProgramFiles(x86)')
+    if Facter.value("architecture") =~ /64/
       dism_cmd = "#{Dir::WINDOWS}\\sysnative\\Dism.exe"
     else
       dism_cmd = "#{Dir::WINDOWS}\\system32\\Dism.exe"
