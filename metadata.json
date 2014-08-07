@@ -1,6 +1,6 @@
 {
   "name": "puppetlabs-dism",
-  "version": "0.2.1",
+  "version": "1.0.0",
   "author": "puppetlabs",
   "summary": "Windows DISM puppet module",
   "license": "Apache License, Version 2.0",

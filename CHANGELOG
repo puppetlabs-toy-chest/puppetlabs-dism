@@ -1,3 +1,10 @@
+2014-08-06 Release 1.0.0
+
+Summary:
+
+Preparing for Puppet 3.7 and x64 Ruby, refacter dism executable lookup and
+refactored to only look for resource once.
+
 2014-07-15 Release 0.2.1
 
 Summary:
