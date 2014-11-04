@@ -11,6 +11,20 @@ Puppet::Type.newtype(:dism) do
     desc 'The answer file for installing the feature.'
   end
 
+  newparam(:source) do
+    desc "The source files needed for installing the feature."
+  end
+  
+  newparam(:limitaccess) do
+    desc "Prevent DISM from contacting Windows Update for repair of online images"
+    newvalues(:true, :false)
+    defaultto(false)
+    
+    munge do |value|
+      resource.munge_boolean(value)
+    end
+  end
+  
   newparam(:all) do
     desc 'A flag indicating if we should install all dependencies or not.'
     newvalues(:true, :false)

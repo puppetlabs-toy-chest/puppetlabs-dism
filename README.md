@@ -39,6 +39,7 @@ The module requires that dism be installed on your system, in most cases this wi
     dism { 'NetFx3':
       ensure => present,
       all => true,
+      source  => 'Z:\2012r2\sxs'
     }
 ```
 
