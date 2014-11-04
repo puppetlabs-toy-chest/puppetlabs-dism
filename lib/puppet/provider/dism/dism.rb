@@ -37,10 +37,14 @@ Puppet::Type.type(:dism).provide(:dism) do
   def create
     if resource[:answer] and resource[:all]
       output = execute([command(:dism), '/online', '/Enable-Feature', '/All', "/FeatureName:#{resource[:name]}", "/Apply-Unattend:#{resource[:answer]}", '/NoRestart'], :failonfail => false)
+    elsif resource[:source] and resource[:all]
+      output = execute([command(:dism), '/online', '/Enable-Feature', "/FeatureName:#{resource[:name]}", '/All', "/Source:#{resource[:source]}", '/LimitAccess', '/NoRestart'], :failonfail => false)
     elsif resource[:answer]
       output = execute([command(:dism), '/online', '/Enable-Feature', "/FeatureName:#{resource[:name]}", "/Apply-Unattend:#{resource[:answer]}", '/NoRestart'], :failonfail => false)
     elsif resource[:all]
       output = execute([command(:dism), '/online', '/Enable-Feature', '/All', "/FeatureName:#{resource[:name]}", '/NoRestart'], :failonfail => false)
+    elsif resource[:source]
+      output = execute([command(:dism), '/online', '/Enable-Feature', "/FeatureName:#{resource[:name]}", "/Source:#{resource[:source]}", '/LimitAccess', '/NoRestart'], :failonfail => false)
     else
       output = execute([command(:dism), '/online', '/Enable-Feature', "/FeatureName:#{resource[:name]}", '/NoRestart'], :failonfail => false)
     end
