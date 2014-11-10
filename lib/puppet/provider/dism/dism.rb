@@ -50,7 +50,7 @@ Puppet::Type.type(:dism).provide(:dism) do
   end
 
   def destroy
-    dism(['/online', '/Disable-Feature', "/FeatureName:#{resource[:name]}", '/NoRestart'])
+    dism(['/online', '/Disable-Feature', "/FeatureName:#{resource[:name]}"])
   end
 
   def currentstate
