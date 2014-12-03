@@ -30,7 +30,11 @@ Puppet::Type.newtype(:dism) do
   newparam(:source) do
     desc "The source files needed for installing the feature."
   end
-
+  
+  newparam(:limitaccess) do
+    newvalues(:true, :false)
+  end
+  
   newparam(:all) do
     desc "A flag indicating if we should install all dependencies or not."
     defaultto(false)
