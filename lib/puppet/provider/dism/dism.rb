@@ -13,7 +13,6 @@ Puppet::Type.type(:dism).provide(:dism) do
                  'dism.exe'
                end
 
-
   def self.prefetch(resources)
     instances.each do |prov|
       if resource = resources[prov.name]
@@ -35,26 +34,32 @@ Puppet::Type.type(:dism).provide(:dism) do
   end
 
   def create
-    if resource[:answer] and resource[:all]
-      output = execute([command(:dism), '/online', '/Enable-Feature', '/All', "/FeatureName:#{resource[:name]}", "/Apply-Unattend:#{resource[:answer]}", '/NoRestart'], :failonfail => false)
-    elsif resource[:source] and resource[:all]
-      output = execute([command(:dism), '/online', '/Enable-Feature', "/FeatureName:#{resource[:name]}", '/All', "/Source:#{resource[:source]}", '/LimitAccess', '/NoRestart'], :failonfail => false)
-    elsif resource[:answer]
-      output = execute([command(:dism), '/online', '/Enable-Feature', "/FeatureName:#{resource[:name]}", "/Apply-Unattend:#{resource[:answer]}", '/NoRestart'], :failonfail => false)
-    elsif resource[:all]
-      output = execute([command(:dism), '/online', '/Enable-Feature', '/All', "/FeatureName:#{resource[:name]}", '/NoRestart'], :failonfail => false)
-    elsif resource[:source]
-      output = execute([command(:dism), '/online', '/Enable-Feature', "/FeatureName:#{resource[:name]}", "/Source:#{resource[:source]}", '/LimitAccess', '/NoRestart'], :failonfail => false)
-    else
-      output = execute([command(:dism), '/online', '/Enable-Feature', "/FeatureName:#{resource[:name]}", '/NoRestart'], :failonfail => false)
-    end
 
+    cmd = [command(:dism), '/online', '/Enable-Feature']
+    if resource[:all]
+      cmd << '/All'
+    end
+    cmd << "/FeatureName:#{resource[:name]}"
+    if resource[:answer]
+      cmd << "/Apply-Unattend:#{resource[:answer]}"
+    end
+    if resource[:source]
+      cmd << "/Source:#{resource[:source]} '/LimitAccess'"
+    end
+    if resource[:norestart].to_s != 'false'
+      cmd << '/NoRestart'
+    end
+    output = execute(cmd, :failonfail => false)
     raise Puppet::Error, "Unexpected exitcode: #{$?.exitstatus}\nError:#{output}" unless resource[:exitcode].include? $?.exitstatus
 
   end
 
   def destroy
-    dism(['/online', '/Disable-Feature', "/FeatureName:#{resource[:name]}", '/NoRestart'])
+    cmd = ['/online', '/Disable-Feature', "/FeatureName:#{resource[:name]}"]
+    if resource[:norestart].to_s == 'true'
+      cmd << '/NoRestart'
+    end
+    dism cmd
   end
 
   def currentstate

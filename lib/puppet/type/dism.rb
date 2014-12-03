@@ -15,7 +15,11 @@ Puppet::Type.newtype(:dism) do
     end
   end
 
-  newparam(:name, :namevar=>true) do
+  newparam(:norestart) do
+    newvalues(:true, :false)
+  end
+
+  newparam(:name, :namevar => true) do
     desc "The Windows feature name (case-sensitive)."
   end
 
