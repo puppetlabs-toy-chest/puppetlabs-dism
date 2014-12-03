@@ -44,7 +44,10 @@ Puppet::Type.type(:dism).provide(:dism) do
       cmd << "/Apply-Unattend:#{resource[:answer]}"
     end
     if resource[:source]
-      cmd << "/Source:#{resource[:source]} '/LimitAccess'"
+      cmd << "/Source:#{resource[:source]}"
+    end
+    if resource[:source].to_s != 'false'
+      cmd << '/LimitAccess'
     end
     if resource[:norestart].to_s != 'false'
       cmd << '/NoRestart'
