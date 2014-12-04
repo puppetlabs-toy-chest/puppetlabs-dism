@@ -46,7 +46,7 @@ Puppet::Type.type(:dism).provide(:dism) do
     if resource[:source]
       cmd << "/Source:#{resource[:source]}"
     end
-    if resource[:source].to_s != 'false'
+    if resource[:limitaccess].to_s != 'false' && resource[:source]
       cmd << '/LimitAccess'
     end
     if resource[:norestart].to_s != 'false'
