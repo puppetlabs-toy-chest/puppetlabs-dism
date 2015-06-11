@@ -1,3 +1,6 @@
 .idea/
 *.iml
 pkg/
+spec/fixtures
+.bundle/
+coverage/
