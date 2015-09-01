@@ -35,29 +35,29 @@ The module requires that dism be installed on your system, in most cases this wi
 
 ##Usage
 ###To enable DotNet3 and all child settings
-```
-    dism { 'NetFx3':
-      ensure => present,
-      all => true,
-      source  => 'Z:\2012r2\sxs'
-    }
-```
+~~~ puppet
+dism { 'NetFx3':
+  ensure => present,
+  all    => true,
+  source => 'Z:\2012r2\sxs'
+}
+~~~
 
 ###To install IIS and provide an answer file for all setup steps
-```
-    dism { 'IIS-WebServer':
-      ensure => present,
-      answer => 'C:\answer\iis.xml',
-    }
-```
+~~~ puppet
+dism { 'IIS-WebServer':
+  ensure => present,
+  answer => 'C:\answer\iis.xml',
+}
+~~~
 
 ###To disable Internet Explorer and prevent restart
-```
-    dism { 'Internet-Explorer-Optional-amd64':
-      ensure    => absent,
-      norestart => true,
-    }
-```
+~~~ puppet
+dism { 'Internet-Explorer-Optional-amd64':
+  ensure    => absent,
+  norestart => true,
+}
+~~~
 
 ##Reference
 
@@ -72,6 +72,3 @@ The module requires that dism be installed on your system, in most cases this wi
 * `exitcodes`: Acceptable exit codes. Defaults to [0, 3010]
 * `source`: Filepath to the source files needed for installing the feature.
 * `limitaccess`: Prevent DISM from contacting WU for repair of online images. Defaults to false
-
-
-
