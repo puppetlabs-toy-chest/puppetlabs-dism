@@ -1,3 +1,17 @@
+##2015-09-01 - Release 1.2.0
+###Summary
+
+Add source and limitaccess parameters to allow for local offline install
+
+###Features
+- All runs now will run with /Quiet
+- Munge truthy and falsy values to be of type boolean
+- Add source param to allow for local access source
+- Add limitaccess parameter
+
+###Bugfixes
+- Remove legacy ensurable block to ensure compatibility with Puppet 4.x
+
 ##2014-11-25 - Release 1.1.0
 ###Summary
 
