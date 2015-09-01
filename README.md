@@ -70,6 +70,8 @@ The module requires that dism be installed on your system, in most cases this wi
 * `answer`: The answer file that you would like to pass to dism.exe to provide any answers.
 * `norestart`: Whether to explicitly tell the provider to NOT restart.  Defaults to false.
 * `exitcodes`: Acceptable exit codes. Defaults to [0, 3010]
+* `source`: Filepath to the source files needed for installing the feature.
+* `limitaccess`: Prevent DISM from contacting WU for repair of online images. Defaults to false
 
 
 
