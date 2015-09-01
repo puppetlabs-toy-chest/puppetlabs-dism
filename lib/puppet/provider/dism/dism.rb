@@ -41,10 +41,16 @@ Puppet::Type.type(:dism).provide(:dism) do
     end
     cmd << "/FeatureName:#{resource[:name]}"
     cmd << '/Quiet'
+    if resource[:source]
+      cmd << "/Source:'#{resource[:source]}'"
+    end
     if resource[:answer]
       cmd << "/Apply-Unattend:#{resource[:answer]}"
     end
-    if resource[:norestart] == :true
+    if resource[:limitaccess] && resource[:source]
+      cmd << '/LimitAccess'
+    end
+   if resource[:norestart] == :true
       cmd << '/NoRestart'
     end
     output = execute(cmd, :failonfail => false)

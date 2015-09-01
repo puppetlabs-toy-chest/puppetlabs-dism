@@ -19,9 +19,16 @@ RSpec.describe provider_class do
       cmd << "/FeatureName:#{params[:name]}"
       cmd << '/Quiet'
 
+      if params.has_key?(:source)
+        cmd << "/Source:'#{params[:source]}'"
+      end
+      if params.has_key?(:limitaccess) && params[:limitaccess] == true && params.has_key?(:source)
+        cmd << '/LimitAccess'
+      end
       if (params.has_key?(:norestart) && params[:norestart] == true) || !(params.has_key?(:norestart))
         cmd << '/NoRestart'
       end
+
 
       Puppet::Util::Execution.stubs(:execute).with(
         cmd, {:failonfail => false}
@@ -78,6 +85,23 @@ RSpec.describe provider_class do
           :name => 'NetFx3',
           :all => true,
           :norestart => true
+        } }
+      end
+    end
+    context 'with source' do
+      it_behaves_like 'valid enable compile' do
+        let(:params) { {
+            :name => 'netFx3',
+            :source => 'C:\\myInstall.cab'
+        } }
+      end
+    end
+    context 'limitaccess' do
+      it_behaves_like 'valid enable compile' do
+        let(:params) { {
+            :name => 'netFx3',
+            :source => 'C:\\myInstall.cab',
+            :limitaccess => true,
         } }
       end
     end
