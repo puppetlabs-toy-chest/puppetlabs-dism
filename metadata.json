@@ -1,16 +1,43 @@
 {
   "name": "puppetlabs-dism",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "author": "puppetlabs",
   "summary": "Provides a DISM puppet resource type on Windows.",
-  "license": "Apache License, Version 2.0",
+  "license": "Apache-2.0",
   "source": "https://github.com/puppetlabs/puppetlabs-dism",
   "project_page": "https://github.com/puppetlabs/puppetlabs-dism",
-  "issues_url": "https://tickets.puppetlabs.com/browse/MODULES",
-  "types": [
-  
+  "issues_url": "https://tickets.puppetlabs.com/browse/MODULES/component/12014",
+  "tags": [
+    "deployment-image-servicing-and-management",
+    "dism",
+    "feature",
+    "microsoft",
+    "package"
   ],
-  "dependencies": [
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "Windows",
+      "operatingsystemrelease": [
+        "Server 2008",
+        "Server 2008 R2",
+        "Server 2012",
+        "Server 2012 R2",
+        "8",
+        "8.1"
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "name": "pe",
+      "version_requirement": ">= 3.2.0 < 2015.3.0"
+    },
+    {
+      "name": "puppet",
+      "version_requirement": ">= 3.4.0 < 5.0.0"
+    }
+  ],
+ "dependencies": [
   
   ]
 }
