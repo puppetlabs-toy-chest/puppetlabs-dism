@@ -1,3 +1,8 @@
+##2015-09-02 - Release 1.2.1
+###Summary
+
+Update metadata for module
+
 ##2015-09-01 - Release 1.2.0
 ###Summary
 
