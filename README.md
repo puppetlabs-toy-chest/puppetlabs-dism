@@ -60,7 +60,20 @@ dism { 'Internet-Explorer-Optional-amd64':
 ~~~
 
 ##Reference
-
+###Deployment on Azure Windows Server 2012 R2 Datacentre (Image from Azure Store)
+####Windows Server 2012 R2 Datacentre does not have dism installed under c:\windows\sysnative 
+####it is under c:\windows\system32
+####to use it with no error, add the following file resource into your base code (before instantiating dism)
+~~~ puppet
+  file { 'C:/Windows/sysnative' :
+    ensure  => directory,
+  } ->
+  file { 'C:/Windows/sysnative/dism.exe' :
+    ensure             => present,
+    source             => 'c:/windows/system32/dism.exe',
+    source_permissions => ignore,
+  }
+~~~ 
 ###Types
 
 #### dism
