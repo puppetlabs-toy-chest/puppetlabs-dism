@@ -23,7 +23,7 @@ Puppet::Type.type(:dism).provide(:dism) do
   end
 
   def self.instances
-    features = dism '/online', '/Get-Features'
+    features = dism '/english', '/online', '/Get-Features'
     features = features.scan(/^Feature Name : ([\w-]+)\nState : (\w+)/)
     features.collect do |f|
       new(:name => f[0], :state => f[1])
@@ -35,14 +35,14 @@ Puppet::Type.type(:dism).provide(:dism) do
   end
 
   def create
-    cmd = [command(:dism), '/online', '/Enable-Feature']
+    cmd = [command(:dism), '/english', '/online', '/Enable-Feature']
     if resource[:all]
       cmd << '/All'
     end
     cmd << "/FeatureName:#{resource[:name]}"
     cmd << '/Quiet'
     if resource[:source]
-      cmd << "/Source:'#{resource[:source]}'"
+      cmd << "/Source:\"#{resource[:source]}\""
     end
     if resource[:answer]
       cmd << "/Apply-Unattend:#{resource[:answer]}"
@@ -58,7 +58,7 @@ Puppet::Type.type(:dism).provide(:dism) do
   end
 
   def destroy
-    cmd = ['/online', '/Disable-Feature', "/FeatureName:#{resource[:name]}", '/Quiet']
+    cmd = ['/english', '/online', '/Disable-Feature', "/FeatureName:#{resource[:name]}", '/Quiet']
     if resource[:norestart] == :true
       cmd << '/NoRestart'
     end
@@ -66,7 +66,7 @@ Puppet::Type.type(:dism).provide(:dism) do
   end
 
   def currentstate
-    feature = dism(['/online', '/Get-FeatureInfo', "/FeatureName:#{resource[:name]}"])
+    feature = dism(['/english', '/online', '/Get-FeatureInfo', "/FeatureName:#{resource[:name]}"])
     feature =~ /^State : (\w+)/
     $1
   end
