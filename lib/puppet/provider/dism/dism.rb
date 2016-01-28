@@ -23,7 +23,7 @@ Puppet::Type.type(:dism).provide(:dism) do
   end
 
   def self.instances
-    features = dism '/online', '/Get-Features'
+    features = dism '/english', '/online', '/Get-Features'
     features = features.scan(/^Feature Name : ([\w-]+)\nState : (\w+)/)
     features.collect do |f|
       new(:name => f[0], :state => f[1])
