@@ -42,7 +42,7 @@ Puppet::Type.type(:dism).provide(:dism) do
     cmd << "/FeatureName:#{resource[:name]}"
     cmd << '/Quiet'
     if resource[:source]
-      cmd << "/Source:'#{resource[:source]}'"
+      cmd << "/Source:\"#{resource[:source]}\""
     end
     if resource[:answer]
       cmd << "/Apply-Unattend:#{resource[:answer]}"
