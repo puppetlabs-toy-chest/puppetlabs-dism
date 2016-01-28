@@ -66,7 +66,7 @@ Puppet::Type.type(:dism).provide(:dism) do
   end
 
   def currentstate
-    feature = dism(['/online', '/Get-FeatureInfo', "/FeatureName:#{resource[:name]}"])
+    feature = dism(['/english', '/online', '/Get-FeatureInfo', "/FeatureName:#{resource[:name]}"])
     feature =~ /^State : (\w+)/
     $1
   end
