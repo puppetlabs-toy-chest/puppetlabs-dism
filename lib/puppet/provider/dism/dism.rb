@@ -36,7 +36,7 @@ Puppet::Type.type(:dism).provide(:dism) do
 
   def create
     cmd = [command(:dism), '/online', '/Enable-Feature']
-    if resource[:all]
+    if resource[:all] == :true
       cmd << '/All'
     end
     cmd << "/FeatureName:#{resource[:name]}"
@@ -47,7 +47,7 @@ Puppet::Type.type(:dism).provide(:dism) do
     if resource[:answer]
       cmd << "/Apply-Unattend:#{resource[:answer]}"
     end
-    if resource[:limitaccess] && resource[:source]
+    if resource[:limitaccess] == :true && resource[:source]
       cmd << '/LimitAccess'
     end
    if resource[:norestart] == :true
