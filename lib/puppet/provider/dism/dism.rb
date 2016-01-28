@@ -35,7 +35,7 @@ Puppet::Type.type(:dism).provide(:dism) do
   end
 
   def create
-    cmd = [command(:dism), '/online', '/Enable-Feature']
+    cmd = [command(:dism), '/english', '/online', '/Enable-Feature']
     if resource[:all]
       cmd << '/All'
     end
@@ -58,7 +58,7 @@ Puppet::Type.type(:dism).provide(:dism) do
   end
 
   def destroy
-    cmd = ['/online', '/Disable-Feature', "/FeatureName:#{resource[:name]}", '/Quiet']
+    cmd = ['/english', '/online', '/Disable-Feature', "/FeatureName:#{resource[:name]}", '/Quiet']
     if resource[:norestart] == :true
       cmd << '/NoRestart'
     end
