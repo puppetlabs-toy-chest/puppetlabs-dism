@@ -14,35 +14,23 @@ Puppet::Type.newtype(:dism) do
   newparam(:source) do
     desc "The source files needed for installing the feature."
   end
-  
+
   newparam(:limitaccess) do
     desc "Prevent DISM from contacting Windows Update for repair of online images"
     newvalues(:true, :false)
-    defaultto(false)
-    
-    munge do |value|
-      resource.munge_boolean(value)
-    end
+    defaultto(:false)
   end
-  
+
   newparam(:all) do
     desc 'A flag indicating if we should install all dependencies or not.'
     newvalues(:true, :false)
-    defaultto(false)
-
-    munge do |value|
-      resource.munge_boolean(value)
-    end
+    defaultto(:false)
   end
 
   newparam(:norestart) do
     desc 'Whether to disable restart if the feature specifies it should be restarted'
     newvalues(:true, :false)
-    defaultto(true)
-
-    munge do |value|
-      resource.munge_boolean(value)
-    end
+    defaultto(:true)
   end
 
   newparam(:exitcode, :array_matching => :all) do
@@ -51,16 +39,5 @@ Puppet::Type.newtype(:dism) do
     # so use truncated codes as workaround.
     #defaultto([0, 3010])
     defaultto([0, 3010, 3010 & 0xFF])
-  end
-
-  def munge_boolean(value)
-    case value
-      when true, "true", :true
-        :true
-      when false, "false", :false
-        :false
-      else
-        fail("munge_boolean only takes booleans")
-    end
   end
 end
