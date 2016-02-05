@@ -13,7 +13,7 @@ RSpec.describe provider_class do
       Puppet::Provider.stubs(:command).with(:dism).returns('dism.exe')
       File.stubs(:exists?).with('C:\Windows\sysnative\Dism.exe').returns(true)
       cmd = %w(dism.exe /online /Enable-Feature)
-      if params[:all] == true
+      if params[:all] == :true
         cmd << '/All'
       end
       cmd << "/FeatureName:#{params[:name]}"
@@ -22,10 +22,10 @@ RSpec.describe provider_class do
       if params.has_key?(:source)
         cmd << "/Source:'#{params[:source]}'"
       end
-      if params.has_key?(:limitaccess) && params[:limitaccess] == true && params.has_key?(:source)
+      if params.has_key?(:limitaccess) && params[:limitaccess] == :true && params.has_key?(:source)
         cmd << '/LimitAccess'
       end
-      if (params.has_key?(:norestart) && params[:norestart] == true) || !(params.has_key?(:norestart))
+      if (params.has_key?(:norestart) && params[:norestart] == :true) || !(params.has_key?(:norestart))
         cmd << '/NoRestart'
       end
 
@@ -54,7 +54,7 @@ RSpec.describe provider_class do
         '/Quiet'
       ]
 
-      if (params.has_key?(:norestart) && params[:norestart] == true) || !(params.has_key?(:norestart))
+      if (params.has_key?(:norestart) && params[:norestart] == :true) || !(params.has_key?(:norestart))
         cmd << '/NoRestart'
       end
       subject.expects(:dism).with(cmd)
@@ -67,7 +67,7 @@ RSpec.describe provider_class do
       it_behaves_like 'valid enable compile' do
         let(:params) { {
           :name => 'NetFx3',
-          :all => true
+          :all => :true
         } }
       end
     end
@@ -75,16 +75,16 @@ RSpec.describe provider_class do
       it_behaves_like 'valid enable compile' do
         let(:params) { {
           :name => 'NetFx3',
-          :all => true,
-          :norestart => false
+          :all => :true,
+          :norestart => :false
         } }
 
       end
       it_behaves_like 'valid enable compile' do
         let(:params) { {
           :name => 'NetFx3',
-          :all => true,
-          :norestart => true
+          :all => :true,
+          :norestart => :true
         } }
       end
     end
@@ -101,7 +101,7 @@ RSpec.describe provider_class do
         let(:params) { {
             :name => 'netFx3',
             :source => 'C:\\myInstall.cab',
-            :limitaccess => true,
+            :limitaccess => :true,
         } }
       end
     end
@@ -119,7 +119,7 @@ RSpec.describe provider_class do
       it_behaves_like 'valid disable compile' do
         let(:params) { {
           :name => 'NetFx3',
-          :norestart => false,
+          :norestart => :false,
           :ensure => :absent
         } }
 
@@ -127,7 +127,7 @@ RSpec.describe provider_class do
       it_behaves_like 'valid disable compile' do
         let(:params) { {
           :name => 'NetFx3',
-          :norestart => true,
+          :norestart => :true,
           :ensure => :absent
         } }
       end
