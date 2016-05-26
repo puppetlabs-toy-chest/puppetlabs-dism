@@ -1,0 +1,22 @@
+---
+.travis.yml:
+  extras:
+    - rvm: 1.9.3
+      env: PUPPET_GEM_VERSION="3.4.0"
+  # FUTURE_PARSER testing is expected to fail and is disabled pending FM-5038
+  allow_failures:
+    - rvm: 2.0.0
+      env: PUPPET_GEM_VERSION="~> 3.0" FUTURE_PARSER="yes"
+
+appveyor.yml:
+  matrix_extras:
+    - PUPPET_GEM_VERSION: 3.4.0
+      RUBY_VER: 193
+
+MAINTAINERS.md:
+  maintainers:
+    - "Puppet Windows Team `windows |at| puppet |dot| com`"
+NOTICE:
+  copyright_holders:
+    - name: 'Puppet, Inc.'
+      begin: 2012
