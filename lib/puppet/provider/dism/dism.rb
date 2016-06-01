@@ -3,7 +3,7 @@ Puppet::Type.type(:dism).provide(:dism) do
 
   confine :operatingsystem => :windows
   defaultfor :operatingsystem => :windows
-
+  
   commands :dism =>
              if File.exists? ("#{ENV['SYSTEMROOT']}\\sysnative\\Dism.exe")
                "#{ENV['SYSTEMROOT']}\\sysnative\\Dism.exe"
@@ -12,7 +12,6 @@ Puppet::Type.type(:dism).provide(:dism) do
              else
                'dism.exe'
              end
-
 
   def self.prefetch(resources)
     instances.each do |prov|
@@ -23,7 +22,7 @@ Puppet::Type.type(:dism).provide(:dism) do
   end
 
   def self.instances
-    features = dism '/online', '/Get-Features'
+    features = execute_command([get_dism_command(), '/online', '/Get-Features'])
     features = features.scan(/^Feature Name : ([\w-]+)\nState : (\w+)/)
     features.collect do |f|
       new(:name => f[0], :state => f[1])
@@ -34,8 +33,17 @@ Puppet::Type.type(:dism).provide(:dism) do
     @property_hash.clear
   end
 
+  def get_dism_command()
+    command(:dism)
+  end
+  
+  def execute_command(args)
+    output = Puppet::Util::Execution.execute(args, :failonfail => false)
+    raise Puppet::Error, "Unexpected exitcode: #{$?.exitstatus}\nError:#{output}" unless resource[:exitcode].include? $?.exitstatus
+    output
+  end 
   def create
-    cmd = [command(:dism), '/online', '/Enable-Feature']
+    cmd = [get_dism_command(), '/online', '/Enable-Feature']
     if resource[:all]
       cmd << '/All'
     end
@@ -50,23 +58,22 @@ Puppet::Type.type(:dism).provide(:dism) do
     if resource[:limitaccess] && resource[:source]
       cmd << '/LimitAccess'
     end
-   if resource[:norestart] == :true
-      cmd << '/NoRestart'
-    end
-    output = execute(cmd, :failonfail => false)
-    raise Puppet::Error, "Unexpected exitcode: #{$?.exitstatus}\nError:#{output}" unless resource[:exitcode].include? $?.exitstatus
-  end
-
-  def destroy
-    cmd = ['/online', '/Disable-Feature', "/FeatureName:#{resource[:name]}", '/Quiet']
     if resource[:norestart] == :true
       cmd << '/NoRestart'
     end
-    dism cmd
+    execute_command(cmd)
+  end
+
+  def destroy
+    cmd = [get_dism_command(), '/online', '/Disable-Feature', "/FeatureName:#{resource[:name]}", '/Quiet']
+    if resource[:norestart] == :true
+      cmd << '/NoRestart'
+    end
+    execute_command(cmd)
   end
 
   def currentstate
-    feature = dism(['/online', '/Get-FeatureInfo', "/FeatureName:#{resource[:name]}"])
+    feature = execute_command([get_dism_command(), '/online', '/Get-FeatureInfo', "/FeatureName:#{resource[:name]}"])
     feature =~ /^State : (\w+)/
     $1
   end
