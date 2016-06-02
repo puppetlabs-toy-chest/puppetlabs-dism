@@ -44,13 +44,14 @@ Puppet::Type.type(:dism).provide(:dism) do
   end 
   def create
     cmd = [get_dism_command(), '/online', '/Enable-Feature']
+
     if resource[:all]
       cmd << '/All'
     end
     cmd << "/FeatureName:#{resource[:name]}"
     cmd << '/Quiet'
     if resource[:source]
-      cmd << "/Source:'#{resource[:source]}'"
+      cmd << "/Source:#{resource[:source]}"
     end
     if resource[:answer]
       cmd << "/Apply-Unattend:#{resource[:answer]}"
@@ -61,6 +62,7 @@ Puppet::Type.type(:dism).provide(:dism) do
     if resource[:norestart] == :true
       cmd << '/NoRestart'
     end
+
     execute_command(cmd)
   end
 

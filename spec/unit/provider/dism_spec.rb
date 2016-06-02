@@ -1,9 +1,7 @@
 #! /usr/bin/env ruby
 
-#http://gofreerange.com/mocha/docs/Mocha/Mock.html#expects-instance_method
-
 require 'spec_helper'
-describe Puppet::Type.type(:dism).provider(:dism), :if => Puppet.features.microsoft_windows? do
+describe Puppet::Type.type(:dism).provider(:dism) do
   #let (:catalog) do Puppet::Resource::Catalog.new end
   let (:type) { Puppet::Type.type(:dism) }
   
@@ -14,6 +12,7 @@ describe Puppet::Type.type(:dism).provider(:dism), :if => Puppet.features.micros
     
   end
   describe "#create" do
+
      it "can install with all" do      
       Puppet::Type.type(:dism).provider(:dism).any_instance.expects(:execute_command).with(['dism.exe', '/online', '/Enable-Feature', '/All', '/FeatureName:NetFx3', '/Quiet', '/NoRestart']).returns(nil)
       
@@ -24,7 +23,7 @@ describe Puppet::Type.type(:dism).provider(:dism), :if => Puppet.features.micros
       
       dismtype.provider.create
     end
-   
+  
     it "can install all with norestart" do      
       Puppet::Type.type(:dism).provider(:dism).any_instance.expects(:execute_command).with(['dism.exe', '/online', '/Enable-Feature', '/All', '/FeatureName:NetFx3', '/Quiet', '/NoRestart']).returns(nil)
       
@@ -48,9 +47,9 @@ describe Puppet::Type.type(:dism).provider(:dism), :if => Puppet.features.micros
       
       dismtype.provider.create
     end
-    
+
     it "can install with source" do      
-      Puppet::Type.type(:dism).provider(:dism).any_instance.expects(:execute_command).with(['dism.exe', '/online', '/Enable-Feature', '/FeatureName:NetFx3', '/Quiet', '/Source:\'C:\\myInstall.cab\'', '/NoRestart']).returns(nil)
+      Puppet::Type.type(:dism).provider(:dism).any_instance.expects(:execute_command).with(['dism.exe', '/online', '/Enable-Feature', '/FeatureName:NetFx3', '/Quiet', '/Source:C:\\myInstall.cab', '/NoRestart']).returns(nil)
       
       dismtype = type.new(
         :name => 'NetFx3',
@@ -61,7 +60,7 @@ describe Puppet::Type.type(:dism).provider(:dism), :if => Puppet.features.micros
     end
     
     it "can install with limitaccess" do      
-      Puppet::Type.type(:dism).provider(:dism).any_instance.expects(:execute_command).with(['dism.exe', '/online', '/Enable-Feature', '/FeatureName:NetFx3', '/Quiet', '/Source:\'C:\\myInstall.cab\'',  '/LimitAccess',  '/NoRestart']).returns(nil)
+      Puppet::Type.type(:dism).provider(:dism).any_instance.expects(:execute_command).with(['dism.exe', '/online', '/Enable-Feature', '/FeatureName:NetFx3', '/Quiet', '/Source:C:\\myInstall.cab',  '/LimitAccess',  '/NoRestart']).returns(nil)
       
       dismtype = type.new(
         :name => 'NetFx3',
@@ -72,7 +71,7 @@ describe Puppet::Type.type(:dism).provider(:dism), :if => Puppet.features.micros
       dismtype.provider.create
     end    
   end
-
+  
   describe "#destroy" do
     it "can install with norestart" do      
       Puppet::Type.type(:dism).provider(:dism).any_instance.expects(:execute_command).with(['dism.exe', '/online', '/Disable-Feature', '/FeatureName:NetFx3', '/Quiet', '/NoRestart']).returns(nil)
