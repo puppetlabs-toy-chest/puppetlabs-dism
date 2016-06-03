@@ -13,6 +13,9 @@ appveyor.yml:
     - PUPPET_GEM_VERSION: 3.4.0
       RUBY_VER: 193
 
+Gemfile:
+  supports_windows: true
+
 MAINTAINERS.md:
   maintainers:
     - "Puppet Windows Team `windows |at| puppet |dot| com`"
