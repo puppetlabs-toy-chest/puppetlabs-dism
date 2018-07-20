@@ -22,7 +22,7 @@ Puppet::Type.type(:dism).provide(:dism) do
   end
 
   def self.instances
-    features = execute_command([get_dism_command(), '/online', '/Get-Features'])
+    features = execute_command([get_dism_command(), '/english', '/online', '/Get-Features'])
     features = features.scan(/^Feature Name : ([\w-]+)\nState : (\w+)/)
     features.collect do |f|
       new(:name => f[0], :state => f[1])
@@ -43,7 +43,7 @@ Puppet::Type.type(:dism).provide(:dism) do
     output
   end 
   def create
-    cmd = [get_dism_command(), '/online', '/Enable-Feature']
+    cmd = [get_dism_command(), '/english', '/online', '/Enable-Feature']
 
     if resource[:all]
       cmd << '/All'
@@ -67,7 +67,7 @@ Puppet::Type.type(:dism).provide(:dism) do
   end
 
   def destroy
-    cmd = [get_dism_command(), '/online', '/Disable-Feature', "/FeatureName:#{resource[:name]}", '/Quiet']
+    cmd = [get_dism_command(), '/english', '/online', '/Disable-Feature', "/FeatureName:#{resource[:name]}", '/Quiet']
     if resource[:norestart] == :true
       cmd << '/NoRestart'
     end
@@ -75,7 +75,7 @@ Puppet::Type.type(:dism).provide(:dism) do
   end
 
   def currentstate
-    feature = execute_command([get_dism_command(), '/online', '/Get-FeatureInfo', "/FeatureName:#{resource[:name]}"])
+    feature = execute_command([get_dism_command(), '/english', '/online', '/Get-FeatureInfo', "/FeatureName:#{resource[:name]}"])
     feature =~ /^State : (\w+)/
     $1
   end
