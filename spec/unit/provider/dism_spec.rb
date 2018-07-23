@@ -14,7 +14,7 @@ describe Puppet::Type.type(:dism).provider(:dism) do
   describe "#create" do
 
      it "can install with all" do      
-      Puppet::Type.type(:dism).provider(:dism).any_instance.expects(:execute_command).with(['dism.exe', '/online', '/Enable-Feature', '/All', '/FeatureName:NetFx3', '/Quiet', '/NoRestart']).returns(nil)
+      Puppet::Type.type(:dism).provider(:dism).any_instance.expects(:execute_command).with(['dism.exe', '/english', '/online', '/Enable-Feature', '/All', '/FeatureName:NetFx3', '/Quiet', '/NoRestart']).returns(nil)
       
       dismtype = type.new(
         :name => 'NetFx3',
@@ -25,7 +25,7 @@ describe Puppet::Type.type(:dism).provider(:dism) do
     end
   
     it "can install all with norestart" do      
-      Puppet::Type.type(:dism).provider(:dism).any_instance.expects(:execute_command).with(['dism.exe', '/online', '/Enable-Feature', '/All', '/FeatureName:NetFx3', '/Quiet', '/NoRestart']).returns(nil)
+      Puppet::Type.type(:dism).provider(:dism).any_instance.expects(:execute_command).with(['dism.exe', '/english', '/online', '/Enable-Feature', '/All', '/FeatureName:NetFx3', '/Quiet', '/NoRestart']).returns(nil)
       
       dismtype = type.new(
         :name => 'NetFx3',
@@ -37,7 +37,7 @@ describe Puppet::Type.type(:dism).provider(:dism) do
     end
     
     it "can install all without norestart" do      
-      Puppet::Type.type(:dism).provider(:dism).any_instance.expects(:execute_command).with(['dism.exe', '/online', '/Enable-Feature', '/All', '/FeatureName:NetFx3', '/Quiet']).returns(nil)
+      Puppet::Type.type(:dism).provider(:dism).any_instance.expects(:execute_command).with(['dism.exe', '/english', '/online', '/Enable-Feature', '/All', '/FeatureName:NetFx3', '/Quiet']).returns(nil)
       
       dismtype = type.new(
         :name => 'NetFx3',
@@ -49,7 +49,7 @@ describe Puppet::Type.type(:dism).provider(:dism) do
     end
 
     it "can install with source" do      
-      Puppet::Type.type(:dism).provider(:dism).any_instance.expects(:execute_command).with(['dism.exe', '/online', '/Enable-Feature', '/FeatureName:NetFx3', '/Quiet', '/Source:C:\\myInstall.cab', '/NoRestart']).returns(nil)
+      Puppet::Type.type(:dism).provider(:dism).any_instance.expects(:execute_command).with(['dism.exe', '/english', '/online', '/Enable-Feature', '/FeatureName:NetFx3', '/Quiet', '/Source:C:\\myInstall.cab', '/NoRestart']).returns(nil)
       
       dismtype = type.new(
         :name => 'NetFx3',
@@ -60,7 +60,7 @@ describe Puppet::Type.type(:dism).provider(:dism) do
     end
     
     it "can install with limitaccess" do      
-      Puppet::Type.type(:dism).provider(:dism).any_instance.expects(:execute_command).with(['dism.exe', '/online', '/Enable-Feature', '/FeatureName:NetFx3', '/Quiet', '/Source:C:\\myInstall.cab',  '/LimitAccess',  '/NoRestart']).returns(nil)
+      Puppet::Type.type(:dism).provider(:dism).any_instance.expects(:execute_command).with(['dism.exe', '/english', '/online', '/Enable-Feature', '/FeatureName:NetFx3', '/Quiet', '/Source:C:\\myInstall.cab',  '/LimitAccess',  '/NoRestart']).returns(nil)
       
       dismtype = type.new(
         :name => 'NetFx3',
@@ -74,7 +74,7 @@ describe Puppet::Type.type(:dism).provider(:dism) do
   
   describe "#destroy" do
     it "can install with norestart" do      
-      Puppet::Type.type(:dism).provider(:dism).any_instance.expects(:execute_command).with(['dism.exe', '/online', '/Disable-Feature', '/FeatureName:NetFx3', '/Quiet', '/NoRestart']).returns(nil)
+      Puppet::Type.type(:dism).provider(:dism).any_instance.expects(:execute_command).with(['dism.exe', '/english', '/online', '/Disable-Feature', '/FeatureName:NetFx3', '/Quiet', '/NoRestart']).returns(nil)
       
       dismtype = type.new(
         :name => 'NetFx3',
@@ -86,7 +86,7 @@ describe Puppet::Type.type(:dism).provider(:dism) do
     end
 
     it "can install without norestart" do      
-      Puppet::Type.type(:dism).provider(:dism).any_instance.expects(:execute_command).with(['dism.exe', '/online', '/Disable-Feature', '/FeatureName:NetFx3', '/Quiet']).returns(nil)
+      Puppet::Type.type(:dism).provider(:dism).any_instance.expects(:execute_command).with(['dism.exe', '/english', '/online', '/Disable-Feature', '/FeatureName:NetFx3', '/Quiet']).returns(nil)
       
       dismtype = type.new(
         :name => 'NetFx3',
