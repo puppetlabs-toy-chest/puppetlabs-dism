@@ -1,13 +1,27 @@
 ---
-appveyor.yml:
-  matrix_extras:
-    - PUPPET_GEM_VERSION: 4.2.3
-      RUBY_VER: 21-x64
+Gemfile:
+  required:
+    ':system_tests':
+      - gem: 'puppet-module-posix-system-r#{minor_version}'
+        platforms: ruby
+      - gem: 'puppet-module-win-system-r#{minor_version}'
+        platforms:
+          - mswin
+          - mingw
+          - x64_mingw
+      - gem: beaker-testmode_switcher
+        version: '~> 0.4'
+      - gem: master_manipulator
+      - gem: puppet-blacksmith
+        version: '~> 3.4'
 
-MAINTAINERS.md:
-  maintainers:
-    - "Puppet Windows Team `windows |at| puppet |dot| com`"
-NOTICE:
-  copyright_holders:
-    - name: 'Puppet, Inc.'
-      begin: 2012
+# For the moment don't do any rubocop checks.
+.rubocop.yml:
+  include_todos: true
+  selected_profile: off
+
+.gitlab-ci.yml:
+  delete: true
+
+spec/default_facts.yml:
+  unmanaged: true
