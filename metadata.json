@@ -7,12 +7,8 @@
   "source": "https://github.com/puppetlabs/puppetlabs-dism",
   "project_page": "https://github.com/puppetlabs/puppetlabs-dism",
   "issues_url": "https://tickets.puppetlabs.com/browse/MODULES/component/12014",
-  "tags": [
-    "deployment-image-servicing-and-management",
-    "dism",
-    "feature",
-    "microsoft",
-    "package"
+  "dependencies": [
+
   ],
   "operatingsystem_support": [
     {
@@ -35,7 +31,14 @@
       "version_requirement": ">= 3.4.0 < 5.0.0"
     }
   ],
- "dependencies": [
-
-  ]
+  "tags": [
+    "deployment-image-servicing-and-management",
+    "dism",
+    "feature",
+    "microsoft",
+    "package"
+  ],
+  "pdk-version": "1.6.0",
+  "template-url": "file://C:/Program Files/Puppet Labs/DevelopmentKit/share/cache/pdk-templates.git",
+  "template-ref": "1.6.0-0-gf5564c0"
 }
