@@ -1,7 +1,16 @@
-##2015-09-02 - Release 1.2.1
+##2018-10-29 - Release 1.3.0
+
 ###Summary
 
-Update metadata for module
+Minor bufixes and adds support for Windows Server 2016, Windows 10, Puppet 5, and Puppet 6
+
+###Features
+- Metadata for supporting Windows Server 2016 and Windows 10 ([MODULES-4271](https://tickets.puppetlabs.com/browse/MODULES-4271))
+- Convert module to PDK format ([MODULES-7048](https://tickets.puppetlabs.com/browse/MODULES-7048))
+- Add support for Puppet 5 and 6 ([MODULES-7833](https://tickets.puppetlabs.com/browse/MODULES-7833))
+
+###Bugfixes
+- DISM fails on windows when source parameter specified ([MODULES-2917](https://tickets.puppetlabs.com/browse/MODULES-2917))
 
 ##2015-09-01 - Release 1.2.0
 ###Summary
