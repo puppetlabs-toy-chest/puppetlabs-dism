@@ -13,6 +13,12 @@ Puppet::Type.type(:dism).provide(:dism) do
                'dism.exe'
              end
 
+  # There does not appear to be a single searchable reference for all error
+  # codes DISM could possibly return. This reference for MSIEXEC return codes
+  # was the closes thing we could find.
+  # https://docs.microsoft.com/en-us/windows/desktop/msi/error-codes
+  SUCCESS_EXIT_CODES ||= [0,1641,3010]
+
   def self.prefetch(resources)
     instances.each do |prov|
       if resource = resources[prov.name]
@@ -22,7 +28,7 @@ Puppet::Type.type(:dism).provide(:dism) do
   end
 
   def self.instances
-    features = execute_command([get_dism_command(), '/english', '/online', '/Get-Features'])
+    features = self.execute_command([command(:dism), '/english', '/online', '/Get-Features'])
     features = features.scan(/^Feature Name : ([\w-]+)\nState : (\w+)/)
     features.collect do |f|
       new(:name => f[0], :state => f[1])
@@ -32,18 +38,15 @@ Puppet::Type.type(:dism).provide(:dism) do
   def flush
     @property_hash.clear
   end
-
-  def get_dism_command()
-    command(:dism)
-  end
   
-  def execute_command(args)
+  def self.execute_command(args)
     output = Puppet::Util::Execution.execute(args, :failonfail => false)
-    raise Puppet::Error, "Unexpected exitcode: #{$?.exitstatus}\nError:#{output}" unless resource[:exitcode].include? $?.exitstatus
+    raise Puppet::Error, "Unexpected exitcode: #{output.exitstatus}\nError:#{output}\nExit Code: #{output.exitstatus}" unless SUCCESS_EXIT_CODES.include?(output.exitstatus)
     output
-  end 
+  end
+
   def create
-    cmd = [get_dism_command(), '/english', '/online', '/Enable-Feature']
+    cmd = [command(:dism), '/english', '/online', '/Enable-Feature']
 
     if resource[:all]
       cmd << '/All'
@@ -63,19 +66,19 @@ Puppet::Type.type(:dism).provide(:dism) do
       cmd << '/NoRestart'
     end
 
-    execute_command(cmd)
+    resource.provider.class.execute_command(cmd)
   end
 
   def destroy
-    cmd = [get_dism_command(), '/english', '/online', '/Disable-Feature', "/FeatureName:#{resource[:name]}", '/Quiet']
+    cmd = [command(:dism), '/english', '/online', '/Disable-Feature', "/FeatureName:#{resource[:name]}", '/Quiet']
     if resource[:norestart] == :true
       cmd << '/NoRestart'
     end
-    execute_command(cmd)
+    resource.provider.class.execute_command(cmd)
   end
 
   def currentstate
-    feature = execute_command([get_dism_command(), '/english', '/online', '/Get-FeatureInfo', "/FeatureName:#{resource[:name]}"])
+    feature = resource.provider.class.execute_command([command(:dism), '/english', '/online', '/Get-FeatureInfo', "/FeatureName:#{resource[:name]}"])
     feature =~ /^State : (\w+)/
     $1
   end
