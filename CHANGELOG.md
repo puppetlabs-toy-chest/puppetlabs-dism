@@ -1,3 +1,12 @@
+##2018-11-1 - Release 1.3.1
+
+###Summary
+
+A bug was introduced in 1.3.0 that broke the module. This is a patch release to
+fix the module.
+
+- Incorrectly scoped functions ([MODULES-8199](https://tickets.puppetlabs.com/browse/MODULES-8199))
+
 ##2018-10-29 - Release 1.3.0
 
 ###Summary
